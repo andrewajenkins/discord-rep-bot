@@ -37,26 +37,9 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command)
 }
 
-// command executor callback
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return
-
-    const command = client.commands.get(interaction.commandName)
-
-    if (!command) return
-
-    try {
-        await command.execute(interaction)
-    } catch (error) {
-        console.error(error)
-        return interaction.reply({
-            content: 'There was an error while executing this command!',
-            ephemeral: true,
-        })
-    }
-})
-
 client.on('warn', (info) => console.log(info))
 client.on('error', console.error)
 
 client.login(token)
+
+exports.client = client
