@@ -1,9 +1,10 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { Reps } = require('../schema')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('mrep')
-        .setDescription('Removes a repuation point from the user.')
+        .setDescription('Removes a repuation point from a user.')
         .addUserOption(
             (option1) =>
                 option1
@@ -21,24 +22,37 @@ module.exports = {
             true
         ),
     async execute(interaction) {
-        console.log('prep interaction:', interaction)
+        console.log('mrep interaction:', interaction)
 
         const targetUser = interaction.options.getMember('user').user.username
         const targetUserId = interaction.options.getMember('user').user.id
         const reviewMsg = interaction.options.getString('message')
 
-        console.log('prep for member', targetUser, 'msg:', reviewMsg)
+        console.log('mrep for member', targetUser, 'msg:', reviewMsg)
 
-        await interaction.reply({
-            ephemeral: false,
-            content:
-                'Reputation modification sucessfull. <@' +
-                interaction.user.id +
-                '> removed one point from <@' +
-                targetUserId +
-                '> for the reason: ' +
-                reviewMsg +
-                '. Reputation ID: uqWmK9j',
-        })
+        try {
+            const tag = await Reps.create({
+                type: 0,
+                message: reviewMsg,
+                timestamp: Date.now(),
+                goal: 0,
+                origin: interaction.user.id,
+                username: targetUserId,
+            })
+            await interaction.reply({
+                ephemeral: false,
+                content:
+                    'Reputation modification sucessfull. <@' +
+                    interaction.user.id +
+                    '> removed one point from <@' +
+                    targetUserId +
+                    '> for the reason: ' +
+                    reviewMsg +
+                    '. Reputation ID: uqWmK9j',
+            })
+        } catch (error) {
+            console.log('Error in prep command!', error)
+            return interaction.reply('Something went wrong with adding a tag.')
+        }
     },
 }

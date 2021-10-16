@@ -1,29 +1,32 @@
 {
-  "name": "diablo-rep-bot",
-  "version": "1.0.0",
-  "description": "hello readme",
-  "main": "index.js",
-  "scripts": {
-    "pretest": "node deploy-commands.js",
-    "test": "node ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/VikingZombie111/discord-rep-bot.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/VikingZombie111/discord-rep-bot/issues"
-  },
-  "homepage": "https://github.com/VikingZombie111/discord-rep-bot#readme",
-  "dependencies": {
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "discord-api-types": "^0.23.1",
-    "discord.js": "^13.2.0"
-  },
-  "devDependencies": {
-    "@discordjs/builders": "^0.6.0",
-    "eslint": "^8.0.1"
-  }
+    "name": "diablo-rep-bot",
+    "version": "1.0.0",
+    "description": "hello readme",
+    "main": "index.js",
+    "scripts": {
+        "pretest": "node deploy-commands.js",
+        "test": "node ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VikingZombie111/discord-rep-bot.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/VikingZombie111/discord-rep-bot/issues"
+    },
+    "homepage": "https://github.com/VikingZombie111/discord-rep-bot#readme",
+    "dependencies": {
+        "@discordjs/rest": "^0.1.0-canary.0",
+        "discord-api-types": "^0.23.1",
+        "discord.js": "^13.2.0",
+        "sequelize": "^6.7.0",
+        "sqlite": "^4.0.23",
+        "sqlite3": "^5.0.2"
+    },
+    "devDependencies": {
+        "@discordjs/builders": "^0.6.0",
+        "eslint": "^8.0.1"
+    }
 }

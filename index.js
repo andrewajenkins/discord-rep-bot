@@ -13,6 +13,9 @@ const client = new Client({
 })
 client.commands = new Collection()
 
+// setup database
+require('./schema')
+
 // load events
 const eventFiles = fs
     .readdirSync('./events')

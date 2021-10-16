@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { Reps } = require('../schema')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,19 +27,31 @@ module.exports = {
         const targetUser = interaction.options.getMember('user').user.username
         const targetUserId = interaction.options.getMember('user').user.id
         const reviewMsg = interaction.options.getString('message')
-
         console.log('prep for member', targetUser, 'msg:', reviewMsg)
 
-        await interaction.reply({
-            ephemeral: false,
-            content:
-                'Reputation modification sucessfull. <@' +
-                interaction.user.id +
-                '> gave one point to <@' +
-                targetUserId +
-                '> for the reason: ' +
-                reviewMsg +
-                '. Reputation ID: uqWmK9j',
-        })
+        try {
+            const tag = await Reps.create({
+                type: 1,
+                message: reviewMsg,
+                timestamp: Date.now(),
+                goal: 0,
+                origin: interaction.user.id,
+                username: targetUserId,
+            })
+            return interaction.reply({
+                ephemeral: false,
+                content:
+                    'Reputation modification sucessfull. <@' +
+                    interaction.user.id +
+                    '> gave one point to <@' +
+                    targetUserId +
+                    '> for the reason: ' +
+                    reviewMsg +
+                    '. Reputation ID: uqWmK9j',
+            })
+        } catch (error) {
+            console.log('Error in prep command!', error)
+            return interaction.reply('Something went wrong with adding a tag.')
+        }
     },
 }
