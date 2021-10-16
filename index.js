@@ -32,8 +32,6 @@ const commandFiles = fs
     .readdirSync('./commands')
     .filter((file) => file.endsWith('.js'))
 
-console.log('command files:', JSON.stringify(commandFiles, null, 2))
-
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`)
     client.commands.set(command.data.name, command)
@@ -42,7 +40,7 @@ for (const file of commandFiles) {
 // command executor callback
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return
-    if (!interaction.isButton()) return
+
     const command = client.commands.get(interaction.commandName)
 
     if (!command) return
@@ -57,5 +55,8 @@ client.on('interactionCreate', async (interaction) => {
         })
     }
 })
+
+client.on('warn', (info) => console.log(info))
+client.on('error', console.error)
 
 client.login(token)
