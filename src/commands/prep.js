@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Reps } = require('../schema')
+// const { Reps } = require('../schema')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,14 +30,14 @@ module.exports = {
         console.log('prep for member', targetUser, 'msg:', reviewMsg)
 
         try {
-            const tag = await Reps.create({
-                type: 1,
-                message: reviewMsg,
-                timestamp: Date.now(),
-                goal: 0,
-                origin: interaction.user.id,
-                username: targetUserId,
-            })
+            // const tag = await Reps.create({
+            //     type: 1,
+            //     message: reviewMsg,
+            //     timestamp: Date.now(),
+            //     goal: 0,
+            //     origin: interaction.user.id,
+            //     username: targetUserId,
+            // })
             return interaction.reply({
                 ephemeral: false,
                 content:

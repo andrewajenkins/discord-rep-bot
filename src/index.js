@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const fs = require('fs')
 const { Client, Collection, Intents } = require('discord.js')
-const { token } = require('./config.json')
+const { token } = require('../config.json')
 
 // Create a new client instance
 const client = new Client({
@@ -13,12 +13,9 @@ const client = new Client({
 })
 client.commands = new Collection()
 
-// setup database
-require('./schema')
-
 // load events
 const eventFiles = fs
-    .readdirSync('./events')
+    .readdirSync('./src/events')
     .filter((file) => file.endsWith('.js'))
 
 for (const file of eventFiles) {
@@ -32,7 +29,7 @@ for (const file of eventFiles) {
 
 // load commands
 const commandFiles = fs
-    .readdirSync('./commands')
+    .readdirSync('./src/commands')
     .filter((file) => file.endsWith('.js'))
 
 for (const file of commandFiles) {
@@ -44,5 +41,20 @@ client.on('warn', (info) => console.log(info))
 client.on('error', console.error)
 
 client.login(token)
-
+// (
+//     // setup database
+//     // require('./schema')
+//     async function () {
+//         // open the database
+//         const db = await open({
+//             filename: './tmp/database.db',
+//             driver: sqlite3.Database,
+//         })
+//     }
+// )()
+const db = await open({
+    filename: '/tmp/database.db',
+    driver: sqlite3.Database,
+})
 exports.client = client
+exports.db = db
