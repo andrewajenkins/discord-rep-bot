@@ -2,10 +2,11 @@
     "name": "diablo-rep-bot",
     "version": "1.0.0",
     "description": "hello readme",
+    "type": "module",
     "main": "src/index.js",
     "scripts": {
-        "pretest": "node src/deploy-commands.js",
-        "test": "node ."
+        "pretest": "node --experimental-json-modules src/deploy-commands.js",
+        "test": "node --experimental-json-modules ."
     },
     "repository": {
         "type": "git",

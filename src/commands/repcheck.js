@@ -1,7 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed } = require('discord.js')
+import { SlashCommandBuilder } from '@discordjs/builders'
+import { MessageEmbed } from 'discord.js'
 
-module.exports = {
+export let repCheck = {
     data: new SlashCommandBuilder()
         .setName('repcheck')
         .setDescription('Replies with reputation details for a user.')

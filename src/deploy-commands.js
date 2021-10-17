@@ -1,21 +1,18 @@
-const fs = require('fs')
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { REST } = require('@discordjs/rest')
-const { Routes } = require('discord-api-types/v9')
-const { clientId, guildId, token } = require('../config.json')
+import { REST } from '@discordjs/rest'
+import { Routes } from 'discord-api-types/v9'
+import { mrep, ping, prep, repCheck } from './commands/index.js'
+import config from '../config.json'
 
 const commands = []
-const commandFiles = fs
-    .readdirSync('./src/commands')
-    .filter((file) => file.endsWith('.js'))
+commands.push(mrep.data)
+commands.push(ping.data)
+commands.push(prep.data)
+commands.push(repCheck.data)
 
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`)
-    commands.push(command.data.toJSON())
-}
-console.log('commands:', JSON.stringify(commands, null, 2))
-const rest = new REST({ version: '9' }).setToken(token)
+const rest = new REST({ version: '9' }).setToken(config.token)
 
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+rest.put(Routes.applicationGuildCommands(config.clientId, config.guildId), {
+    body: commands,
+})
     .then(() => console.log('Successfully registered application commands.'))
     .catch(console.error)

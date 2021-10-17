@@ -1,4 +1,4 @@
-module.exports = {
+export let messageCreate = {
     name: 'messageCreate',
     once: false,
     async execute(message) {

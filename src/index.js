@@ -1,10 +1,10 @@
-// Require the necessary discord.js classes
-const fs = require('fs')
-const { Client, Collection, Intents } = require('discord.js')
-const { token } = require('../config.json')
+import { Client, Collection, Intents } from 'discord.js'
+import { interactionCreate, messageCreate, ready } from './events/index.js'
+import { mrep, ping, prep, repCheck } from './commands/index.js'
+import config from '../config.json'
 
-// Create a new client instance
-const client = new Client({
+// create client
+export const client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.GUILD_MESSAGES,
@@ -14,47 +14,17 @@ const client = new Client({
 client.commands = new Collection()
 
 // load events
-const eventFiles = fs
-    .readdirSync('./src/events')
-    .filter((file) => file.endsWith('.js'))
-
-for (const file of eventFiles) {
-    const event = require(`./events/${file}`)
-    if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args))
-    } else {
-        client.on(event.name, (...args) => event.execute(...args))
-    }
-}
+client.once(ready.name, ready.execute)
+client.on(interactionCreate.name, interactionCreate.execute)
+client.on(messageCreate.name, messageCreate.execute)
 
 // load commands
-const commandFiles = fs
-    .readdirSync('./src/commands')
-    .filter((file) => file.endsWith('.js'))
-
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`)
-    client.commands.set(command.data.name, command)
-}
+client.commands.set(mrep.data.name, mrep)
+client.commands.set(ping.data.name, ping)
+client.commands.set(prep.data.name, prep)
+client.commands.set(repCheck.data.name, repCheck)
 
 client.on('warn', (info) => console.log(info))
 client.on('error', console.error)
 
-client.login(token)
-// (
-//     // setup database
-//     // require('./schema')
-//     async function () {
-//         // open the database
-//         const db = await open({
-//             filename: './tmp/database.db',
-//             driver: sqlite3.Database,
-//         })
-//     }
-// )()
-const db = await open({
-    filename: '/tmp/database.db',
-    driver: sqlite3.Database,
-})
-exports.client = client
-exports.db = db
+client.login(config.token)

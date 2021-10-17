@@ -1,14 +1,12 @@
-const myClient = require('../index')
+import { client } from '../index.js'
 
-module.exports = {
+export let interactionCreate = {
     name: 'interactionCreate',
     once: false,
     async execute(interaction) {
-        const myClient = require('../index')
-        console.log('client:', JSON.stringify(myClient.client))
         if (!interaction.isCommand()) return
 
-        const command = myClient.client.commands.get(interaction.commandName)
+        const command = client.commands.get(interaction.commandName)
 
         if (!command) return
 

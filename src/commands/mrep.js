@@ -1,8 +1,9 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
+import { SlashCommandBuilder } from '@discordjs/builders'
 // const { Reps } = require('../schema')
-const { db } = require('../events/ready')
+import { open } from 'sqlite'
+import sqlite3 from 'sqlite3'
 
-module.exports = {
+export let mrep = {
     data: new SlashCommandBuilder()
         .setName('mrep')
         .setDescription('Removes a repuation point from a user.')
@@ -32,14 +33,11 @@ module.exports = {
         console.log('mrep for member', targetUser, 'msg:', reviewMsg)
 
         try {
-            // const tag = await Reps.create({
-            //     type: 0,
-            //     message: reviewMsg,
-            //     timestamp: Date.now(),
-            //     goal: 0,
-            //     origin: interaction.user.id,
-            //     username: targetUserId,
-            // })
+            const db = await open({
+                filename: './tmp/database.db',
+                driver: sqlite3.Database,
+            })
+
             function makeId(length) {
                 var result = ''
                 var characters =
@@ -51,17 +49,17 @@ module.exports = {
                     )
                 }
                 return result
-            }
+            } //softcore/hardcore/any hello game
 
-            const result = await db.db.get(
-                'INSERT INTO reputations VALUES(?,?,?,?,?,?)',
+            const result = await db.get(
+                'INSERT INTO reputations VALUES ($id,$type,$message,$timestamp,$goal,$origin)',
                 {
-                    id: makeId(7),
-                    type: 0,
-                    message: reviewMsg,
-                    timestamp: Date.now(),
-                    goal: 0,
-                    origin: interaction.user.id,
+                    $id: makeId(7),
+                    $type: 0,
+                    $message: reviewMsg,
+                    $timestamp: Date.now(),
+                    $goal: Number(targetUserId),
+                    $origin: Number(interaction.user.id),
                 }
             )
             // "INSERT INTO reputations VALUES(?,?,?,?,?,?)",
@@ -78,8 +76,8 @@ module.exports = {
                     '. Reputation ID: uqWmK9j',
             })
         } catch (error) {
-            console.log('Error in prep command!', error)
-            return interaction.reply('Something went wrong with adding a tag.')
+            console.log('Error in mrep command!', error)
+            return interaction.reply('Something went wrong with mrep command.')
         }
     },
 }

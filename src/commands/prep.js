@@ -1,7 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
+import { SlashCommandBuilder } from '@discordjs/builders'
 // const { Reps } = require('../schema')
 
-module.exports = {
+export let prep = {
     data: new SlashCommandBuilder()
         .setName('prep')
         .setDescription('Give a repuation point to a user.')

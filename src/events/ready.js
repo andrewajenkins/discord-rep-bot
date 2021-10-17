@@ -1,19 +1,25 @@
-// const { sequelize } = require('../schema')
-const sqlite3 = require('sqlite3')
-const { open } = require('sqlite')
+import sqlite3 from 'sqlite3'
+// import { DAO } from '../dao.js'
+import { open } from 'sqlite'
 
-module.exports = {
+export let ready = {
     name: 'ready',
     once: true,
     async execute(client) {
         console.log(`Ready! Logged in as ${client.user.tag}`)
-        // sequelize.sync()
 
-        sqlite3.verbose()
+        // const db = new DAO()
+
+        const db = await open({
+            filename: './tmp/database.db',
+            driver: sqlite3.Database,
+        })
 
         async function createTable(tableName, values) {
             await db.exec(`CREATE TABLE IF NOT EXISTS ${tableName} ${values}`)
         }
+
+        sqlite3.verbose()
 
         await createTable(
             'reputations',
