@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-// const { Reps } = require('../schema')
 import { open } from 'sqlite'
 import sqlite3 from 'sqlite3'
 
@@ -24,15 +23,16 @@ export let mrep = {
             true
         ),
     async execute(interaction) {
-        console.log('mrep interaction:', interaction)
-
-        const targetUser = interaction.options.getMember('user').user.username
-        const targetUserId = interaction.options.getMember('user').user.id
-        const reviewMsg = interaction.options.getString('message')
-
-        console.log('mrep for member', targetUser, 'msg:', reviewMsg)
-
         try {
+            console.log('mrep interaction:', interaction)
+
+            const targetUser =
+                interaction.options.getMember('user').user.username
+            const targetUserId = interaction.options.getMember('user').user.id
+            const reviewMsg = interaction.options.getString('message')
+
+            console.log('mrep for member', targetUser, 'msg:', reviewMsg)
+
             const db = await open({
                 filename: './tmp/database.db',
                 driver: sqlite3.Database,
@@ -49,7 +49,7 @@ export let mrep = {
                     )
                 }
                 return result
-            } //softcore/hardcore/any hello game
+            }
 
             const result = await db.get(
                 'INSERT INTO reputations VALUES ($id,$type,$message,$timestamp,$goal,$origin)',
@@ -64,7 +64,7 @@ export let mrep = {
             )
             // "INSERT INTO reputations VALUES(?,?,?,?,?,?)",
             //                      [id, 0, reason, int(time.time()), associated_user.id, ctx.message.author.id]
-            await interaction.reply({
+            const response = {
                 ephemeral: false,
                 content:
                     'Reputation modification sucessfull. <@' +
@@ -74,10 +74,17 @@ export let mrep = {
                     '> for the reason: ' +
                     reviewMsg +
                     '. Reputation ID: uqWmK9j',
-            })
+            }
+            if (interaction.commandName == 'test') {
+                interaction.followUp(response)
+                return
+            }
+            await interaction.reply(response)
         } catch (error) {
             console.log('Error in mrep command!', error)
-            return interaction.reply('Something went wrong with mrep command.')
+            return interaction.followUp(
+                'Something went wrong with mrep command.'
+            )
         }
     },
 }

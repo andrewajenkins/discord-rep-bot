@@ -5,8 +5,9 @@
     "type": "module",
     "main": "src/index.js",
     "scripts": {
-        "pretest": "node --experimental-json-modules src/deploy-commands.js",
-        "test": "node --experimental-json-modules ."
+        "test": "mocha --experimental-json-modules ",
+        "start": "node --experimental-json-modules .",
+        "deploy": "node --experimental-json-modules src/deploy-commands.js"
     },
     "repository": {
         "type": "git",
@@ -24,13 +25,11 @@
         "discord.js": "^13.2.0",
         "sequelize": "^6.7.0",
         "sqlite": "^4.0.23",
-        "sqlite3": "^5.0.2",
-        "typescript": "^4.4.4"
+        "sqlite3": "^5.0.2"
     },
     "devDependencies": {
         "@discordjs/builders": "^0.6.0",
-        "@types/node": "^16.11.0",
         "eslint": "^8.0.1",
-        "tslib": "^2.3.1"
+        "mocha": "^9.1.3"
     }
 }

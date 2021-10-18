@@ -1,14 +1,24 @@
-import { client } from '../index.js'
+import { MyClient } from '../my-client.js'
 
 export let interactionCreate = {
     name: 'interactionCreate',
     once: false,
     async execute(interaction) {
-        if (!interaction.isCommand()) return
+        // if (!interaction.isCommand()) return
+
+        const client = MyClient.client
+
+        if (interaction.commandName == 'test') {
+            client.commands.get('ping').execute(interaction)
+            client.commands.get('mrep').execute(interaction)
+            return
+        }
 
         const command = client.commands.get(interaction.commandName)
 
         if (!command) return
+
+        // TODO auth checks
 
         try {
             await command.execute(interaction)
